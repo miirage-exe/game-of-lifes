@@ -13,6 +13,7 @@ var dict = {};
 
 
 
+
 function randomize(){
 
     //first colonne 
