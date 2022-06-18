@@ -127,7 +127,7 @@ function renderFrame(){
             }else {
                 ctx.fillStyle = '#DF5050';
             }
-            ctx.fillRect(((i-1)*cellSize) + padding, ((j-1)*cellSize) + padding, cellSize - padding*2, cellSize - padding*2);
+            ctx.fillRect(((i-1)*cellSize) + padding, ((j-1)*cellSize) + padding, cellSize - (padding*2), cellSize - (padding*2));
         }
     }
 }
