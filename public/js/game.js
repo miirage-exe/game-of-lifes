@@ -3,14 +3,13 @@ var ctx = canvas.getContext('2d');
 
 const cote = 64
 const cellSize = 8
+const padding = 0.6
 
 ctx.width = cote*cellSize
 ctx.height = cote*cellSize
 
 var flag = false
 var dict = {};
-
-
 
 
 
@@ -117,21 +116,20 @@ function runGame(){
 function renderFrame(){
     for (let i = 1; i <= cote; i++) {
         for (let j = 1; j <= cote; j++) {
-            if(dict[i][j] === undefined){
+            if(!dict[i] || dict[i][j] === undefined){
                 if((i+j)%2){
-                    ctx.fillStyle = '#EDEDED';
+                    ctx.fillStyle = '#242424';//EDEDED
                 } else {
-                    ctx.fillStyle = 'white';
+                    ctx.fillStyle = '#181818';//white
                 }
             } else if(dict[i][j] === false){
                 ctx.fillStyle = 'red';
             }else {
-                ctx.fillStyle = 'black';
+                ctx.fillStyle = '#DF5050';
             }
-            ctx.fillRect((i-1)*cellSize, (j-1)*cellSize, cellSize, cellSize);
+            ctx.fillRect(((i-1)*cellSize) + padding, ((j-1)*cellSize) + padding, cellSize - padding*2, cellSize - padding*2);
         }
     }
 }
 
-clear()
 renderFrame()
