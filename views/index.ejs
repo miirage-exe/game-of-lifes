@@ -9,7 +9,11 @@
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <canvas id="game-canvas"></canvas>
+    <canvas id="game-canvas" width="512" height="512"></canvas>
+    <button onclick="randomize(); renderFrame();">Randomize</button>
+    <button onclick="flag = true; runGame()">Run</button>
+    <button onclick="flag = false">Stop</button>
+    
     <script src="/js/game.js"></script>
 </body>
 </html>
