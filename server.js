@@ -19,7 +19,7 @@ app.use(express.json());
 
 
 app.get('/', (req, res) => {
-    res.render('index')
+    res.render('home')
 })
 
 // Démarre le serveur
