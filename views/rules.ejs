@@ -1,14 +1,669 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <button onclick="window.location.href = '/'">Back to home</button>
-    <button onclick="window.location.href = '/lobby'">Start playing</button>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Règles du jeu</title><style>
+    /* cspell:disable-file */
+    /* webkit printing magic: print all background colors */
+    html {
+        -webkit-print-color-adjust: exact;
+    }
+    * {
+        box-sizing: border-box;
+        -webkit-print-color-adjust: exact;
+    }
     
-</body>
-</html>
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    @media only screen {
+        body {
+            margin: 2em auto;
+            max-width: 900px;
+            color: rgb(55, 53, 47);
+        }
+    }
+    
+    body {
+        line-height: 1.5;
+        white-space: pre-wrap;
+    }
+    
+    a,
+    a.visited {
+        color: inherit;
+        text-decoration: underline;
+    }
+    
+    .pdf-relative-link-path {
+        font-size: 80%;
+        color: #444;
+    }
+    
+    h1,
+    h2,
+    h3 {
+        letter-spacing: -0.01em;
+        line-height: 1.2;
+        font-weight: 600;
+        margin-bottom: 0;
+    }
+    
+    .page-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-top: 0;
+        margin-bottom: 0.75em;
+    }
+    
+    h1 {
+        font-size: 1.875rem;
+        margin-top: 1.875rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+        margin-top: 1.5rem;
+    }
+    
+    h3 {
+        font-size: 1.25rem;
+        margin-top: 1.25rem;
+    }
+    
+    .source {
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        padding: 1.5em;
+        word-break: break-all;
+    }
+    
+    .callout {
+        border-radius: 3px;
+        padding: 1rem;
+    }
+    
+    figure {
+        margin: 1.25em 0;
+        page-break-inside: avoid;
+    }
+    
+    figcaption {
+        opacity: 0.5;
+        font-size: 85%;
+        margin-top: 0.5em;
+    }
+    
+    mark {
+        background-color: transparent;
+    }
+    
+    .indented {
+        padding-left: 1.5em;
+    }
+    
+    hr {
+        background: transparent;
+        display: block;
+        width: 100%;
+        height: 1px;
+        visibility: visible;
+        border: none;
+        border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+    }
+    
+    img {
+        max-width: 100%;
+    }
+    
+    @media only print {
+        img {
+            max-height: 100vh;
+            object-fit: contain;
+        }
+    }
+    
+    @page {
+        margin: 1in;
+    }
+    
+    .collection-content {
+        font-size: 0.875rem;
+    }
+    
+    .column-list {
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .column {
+        padding: 0 1em;
+    }
+    
+    .column:first-child {
+        padding-left: 0;
+    }
+    
+    .column:last-child {
+        padding-right: 0;
+    }
+    
+    .table_of_contents-item {
+        display: block;
+        font-size: 0.875rem;
+        line-height: 1.3;
+        padding: 0.125rem;
+    }
+    
+    .table_of_contents-indent-1 {
+        margin-left: 1.5rem;
+    }
+    
+    .table_of_contents-indent-2 {
+        margin-left: 3rem;
+    }
+    
+    .table_of_contents-indent-3 {
+        margin-left: 4.5rem;
+    }
+    
+    .table_of_contents-link {
+        text-decoration: none;
+        opacity: 0.7;
+        border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+    }
+    
+    table,
+    th,
+    td {
+        border: 1px solid rgba(55, 53, 47, 0.09);
+        border-collapse: collapse;
+    }
+    
+    table {
+        border-left: none;
+        border-right: none;
+    }
+    
+    th,
+    td {
+        font-weight: normal;
+        padding: 0.25em 0.5em;
+        line-height: 1.5;
+        min-height: 1.5em;
+        text-align: left;
+    }
+    
+    th {
+        color: rgba(55, 53, 47, 0.6);
+    }
+    
+    ol,
+    ul {
+        margin: 0;
+        margin-block-start: 0.6em;
+        margin-block-end: 0.6em;
+    }
+    
+    li > ol:first-child,
+    li > ul:first-child {
+        margin-block-start: 0.6em;
+    }
+    
+    ul > li {
+        list-style: disc;
+    }
+    
+    ul.to-do-list {
+        text-indent: -1.7em;
+    }
+    
+    ul.to-do-list > li {
+        list-style: none;
+    }
+    
+    .to-do-children-checked {
+        text-decoration: line-through;
+        opacity: 0.375;
+    }
+    
+    ul.toggle > li {
+        list-style: none;
+    }
+    
+    ul {
+        padding-inline-start: 1.7em;
+    }
+    
+    ul > li {
+        padding-left: 0.1em;
+    }
+    
+    ol {
+        padding-inline-start: 1.6em;
+    }
+    
+    ol > li {
+        padding-left: 0.2em;
+    }
+    
+    .mono ol {
+        padding-inline-start: 2em;
+    }
+    
+    .mono ol > li {
+        text-indent: -0.4em;
+    }
+    
+    .toggle {
+        padding-inline-start: 0em;
+        list-style-type: none;
+    }
+    
+    /* Indent toggle children */
+    .toggle > li > details {
+        padding-left: 1.7em;
+    }
+    
+    .toggle > li > details > summary {
+        margin-left: -1.1em;
+    }
+    
+    .selected-value {
+        display: inline-block;
+        padding: 0 0.5em;
+        background: rgba(206, 205, 202, 0.5);
+        border-radius: 3px;
+        margin-right: 0.5em;
+        margin-top: 0.3em;
+        margin-bottom: 0.3em;
+        white-space: nowrap;
+    }
+    
+    .collection-title {
+        display: inline-block;
+        margin-right: 1em;
+    }
+    
+    .simple-table {
+        margin-top: 1em;
+        font-size: 0.875rem;
+        empty-cells: show;
+    }
+    .simple-table td {
+        height: 29px;
+        min-width: 120px;
+    }
+    
+    .simple-table th {
+        height: 29px;
+        min-width: 120px;
+    }
+    
+    .simple-table-header-color {
+        background: rgb(247, 246, 243);
+        color: black;
+    }
+    .simple-table-header {
+        font-weight: 500;
+    }
+    
+    time {
+        opacity: 0.5;
+    }
+    
+    .icon {
+        display: inline-block;
+        max-width: 1.2em;
+        max-height: 1.2em;
+        text-decoration: none;
+        vertical-align: text-bottom;
+        margin-right: 0.5em;
+    }
+    
+    img.icon {
+        border-radius: 3px;
+    }
+    
+    .user-icon {
+        width: 1.5em;
+        height: 1.5em;
+        border-radius: 100%;
+        margin-right: 0.5rem;
+    }
+    
+    .user-icon-inner {
+        font-size: 0.8em;
+    }
+    
+    .text-icon {
+        border: 1px solid #000;
+        text-align: center;
+    }
+    
+    .page-cover-image {
+        display: block;
+        object-fit: cover;
+        width: 100%;
+        max-height: 30vh;
+    }
+    
+    .page-header-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+    
+    .page-header-icon-with-cover {
+        margin-top: -0.72em;
+        margin-left: 0.07em;
+    }
+    
+    .page-header-icon img {
+        border-radius: 3px;
+    }
+    
+    .link-to-page {
+        margin: 1em 0;
+        padding: 0;
+        border: none;
+        font-weight: 500;
+    }
+    
+    p > .user {
+        opacity: 0.5;
+    }
+    
+    td > .user,
+    td > time {
+        white-space: nowrap;
+    }
+    
+    input[type="checkbox"] {
+        transform: scale(1.5);
+        margin-right: 0.6em;
+        vertical-align: middle;
+    }
+    
+    p {
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+    }
+    
+    .image {
+        border: none;
+        margin: 1.5em 0;
+        padding: 0;
+        border-radius: 0;
+        text-align: center;
+    }
+    
+    .code,
+    code {
+        background: rgba(135, 131, 120, 0.15);
+        border-radius: 3px;
+        padding: 0.2em 0.4em;
+        border-radius: 3px;
+        font-size: 85%;
+        tab-size: 2;
+    }
+    
+    code {
+        color: #eb5757;
+    }
+    
+    .code {
+        padding: 1.5em 1em;
+    }
+    
+    .code-wrap {
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
+    
+    .code > code {
+        background: none;
+        padding: 0;
+        font-size: 100%;
+        color: inherit;
+    }
+    
+    blockquote {
+        font-size: 1.25em;
+        margin: 1em 0;
+        padding-left: 1em;
+        border-left: 3px solid rgb(55, 53, 47);
+    }
+    
+    .bookmark {
+        text-decoration: none;
+        max-height: 8em;
+        padding: 0;
+        display: flex;
+        width: 100%;
+        align-items: stretch;
+    }
+    
+    .bookmark-title {
+        font-size: 0.85em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        height: 1.75em;
+        white-space: nowrap;
+    }
+    
+    .bookmark-text {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .bookmark-info {
+        flex: 4 1 180px;
+        padding: 12px 14px 14px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+    .bookmark-image {
+        width: 33%;
+        flex: 1 1 180px;
+        display: block;
+        position: relative;
+        object-fit: cover;
+        border-radius: 1px;
+    }
+    
+    .bookmark-description {
+        color: rgba(55, 53, 47, 0.6);
+        font-size: 0.75em;
+        overflow: hidden;
+        max-height: 4.5em;
+        word-break: break-word;
+    }
+    
+    .bookmark-href {
+        font-size: 0.75em;
+        margin-top: 0.25em;
+    }
+    
+    .sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+    .code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+    .serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+    .mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+    .pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+    .pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+    .pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+    .pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+    .pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+    .pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+    .pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+    .pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+    .pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+    .pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+    .pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+    .pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+    .pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+    .pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+    .pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+    .pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+    .highlight-default {
+        color: rgba(55, 53, 47, 1);
+    }
+    .highlight-gray {
+        color: rgba(120, 119, 116, 1);
+        fill: rgba(120, 119, 116, 1);
+    }
+    .highlight-brown {
+        color: rgba(159, 107, 83, 1);
+        fill: rgba(159, 107, 83, 1);
+    }
+    .highlight-orange {
+        color: rgba(217, 115, 13, 1);
+        fill: rgba(217, 115, 13, 1);
+    }
+    .highlight-yellow {
+        color: rgba(203, 145, 47, 1);
+        fill: rgba(203, 145, 47, 1);
+    }
+    .highlight-teal {
+        color: rgba(68, 131, 97, 1);
+        fill: rgba(68, 131, 97, 1);
+    }
+    .highlight-blue {
+        color: rgba(51, 126, 169, 1);
+        fill: rgba(51, 126, 169, 1);
+    }
+    .highlight-purple {
+        color: rgba(144, 101, 176, 1);
+        fill: rgba(144, 101, 176, 1);
+    }
+    .highlight-pink {
+        color: rgba(193, 76, 138, 1);
+        fill: rgba(193, 76, 138, 1);
+    }
+    .highlight-red {
+        color: rgba(212, 76, 71, 1);
+        fill: rgba(212, 76, 71, 1);
+    }
+    .highlight-gray_background {
+        background: rgba(241, 241, 239, 1);
+    }
+    .highlight-brown_background {
+        background: rgba(244, 238, 238, 1);
+    }
+    .highlight-orange_background {
+        background: rgba(251, 236, 221, 1);
+    }
+    .highlight-yellow_background {
+        background: rgba(251, 243, 219, 1);
+    }
+    .highlight-teal_background {
+        background: rgba(237, 243, 236, 1);
+    }
+    .highlight-blue_background {
+        background: rgba(231, 243, 248, 1);
+    }
+    .highlight-purple_background {
+        background: rgba(244, 240, 247, 0.8);
+    }
+    .highlight-pink_background {
+        background: rgba(249, 238, 243, 0.8);
+    }
+    .highlight-red_background {
+        background: rgba(253, 235, 236, 1);
+    }
+    .block-color-default {
+        color: inherit;
+        fill: inherit;
+    }
+    .block-color-gray {
+        color: rgba(120, 119, 116, 1);
+        fill: rgba(120, 119, 116, 1);
+    }
+    .block-color-brown {
+        color: rgba(159, 107, 83, 1);
+        fill: rgba(159, 107, 83, 1);
+    }
+    .block-color-orange {
+        color: rgba(217, 115, 13, 1);
+        fill: rgba(217, 115, 13, 1);
+    }
+    .block-color-yellow {
+        color: rgba(203, 145, 47, 1);
+        fill: rgba(203, 145, 47, 1);
+    }
+    .block-color-teal {
+        color: rgba(68, 131, 97, 1);
+        fill: rgba(68, 131, 97, 1);
+    }
+    .block-color-blue {
+        color: rgba(51, 126, 169, 1);
+        fill: rgba(51, 126, 169, 1);
+    }
+    .block-color-purple {
+        color: rgba(144, 101, 176, 1);
+        fill: rgba(144, 101, 176, 1);
+    }
+    .block-color-pink {
+        color: rgba(193, 76, 138, 1);
+        fill: rgba(193, 76, 138, 1);
+    }
+    .block-color-red {
+        color: rgba(212, 76, 71, 1);
+        fill: rgba(212, 76, 71, 1);
+    }
+    .block-color-gray_background {
+        background: rgba(241, 241, 239, 1);
+    }
+    .block-color-brown_background {
+        background: rgba(244, 238, 238, 1);
+    }
+    .block-color-orange_background {
+        background: rgba(251, 236, 221, 1);
+    }
+    .block-color-yellow_background {
+        background: rgba(251, 243, 219, 1);
+    }
+    .block-color-teal_background {
+        background: rgba(237, 243, 236, 1);
+    }
+    .block-color-blue_background {
+        background: rgba(231, 243, 248, 1);
+    }
+    .block-color-purple_background {
+        background: rgba(244, 240, 247, 0.8);
+    }
+    .block-color-pink_background {
+        background: rgba(249, 238, 243, 0.8);
+    }
+    .block-color-red_background {
+        background: rgba(253, 235, 236, 1);
+    }
+    .select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+    .select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+    .select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+    .select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+    .select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+    .select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+    .select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+    .select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+    .select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+    .select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+    
+    .checkbox {
+        display: inline-flex;
+        vertical-align: text-bottom;
+        width: 16;
+        height: 16;
+        background-size: 16px;
+        margin-left: 2px;
+        margin-right: 5px;
+    }
+    
+    .checkbox-on {
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+    }
+    
+    .checkbox-off {
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+    }
+        
+    </style></head><body><article id="f357efb8-5a18-40eb-9f40-af58b05bd034" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">📒</span></div><h1 class="page-title">Règles du jeu</h1></header><div class="page-body"><h1 id="0508609a-b731-4097-9fa5-46253900b398" class="">Présentation</h1><figure class="block-color-red_background callout" style="white-space:pre-wrap;display:flex" id="a0b8e40c-fd75-4d69-969e-926a582cb416"><div style="font-size:1.5em"><span class="icon">❗</span></div><div style="width:100%">Il est possible que les <em>points de vie</em> des bases et les <em>points d’unité</em> soit fusionnés pour ne créer qu’un seul type de points. Ainsi créer des unité reviendra à affaiblir sa propre base. Un peu plus logique et interressant. A voir.</div></figure><h2 id="6115c5aa-e470-4594-bf7c-1404fdd71a79" class="">Principe</h2><p id="000bd23d-e43f-42b3-b009-ec0a7c69e241" class="">Le jeu des vies suit exactement le même principe que le <a href="https://fr.wikipedia.org/wiki/Jeu_de_la_vie">jeu de la vie</a> de John Horton Conway.</p><figure id="3fb4c337-94a8-42a2-a5b6-ead0fd1b780a"><a href="https://fr.wikipedia.org/wiki/Jeu_de_la_vie#R%C3%A8gles" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Jeu de la vie - Wikipédia</div><div class="bookmark-description">Le Jeu de la vie est un automate cellulaire imaginé par John Horton Conway en 1970. Malgré des règles très simples, il est Turing-complet. C&#x27;est un jeu de simulation au sens mathématique. Le Jeu de la vie est un &quot; jeu à zéro joueur &quot;, puisqu&#x27;il ne nécessite aucune intervention du joueur lors de son déroulement.</div></div><div class="bookmark-href"><img src="https://fr.wikipedia.org/static/favicon/wikipedia.ico" class="icon bookmark-icon"/>https://fr.wikipedia.org/wiki/Jeu_de_la_vie#R%C3%A8gles</div></div><img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/Gospers_glider_gun.gif" class="bookmark-image"/></a></figure><h2 id="8542c7c1-8926-46af-9b40-044333418c01" class="">Environnement</h2><p id="43ff7e5a-d475-48a5-ab74-f461edb2331c" class="">Les cellules sont réparties dans une grille carré de 64u de coté. Si une cellule doit être créée en dehors de la grille, elle n’est pas générée.</p><p id="7bc8038c-3a1b-4204-9644-43a45c15c136" class="">Chaque joueur possède des points d’unité qui leur permettent de créer des cellules.</p><h2 id="9044956e-706c-46dd-9655-0695fea43932" class=""><strong>Aperçu</strong></h2><p id="e72edb22-71b1-4ba1-a8e8-9fb68c7722df" class="">Le jeu se joue à 2. Chaque joueur possède une base qui correspond à 1 coté de la grille (de préférence gauche/droite) opposée à celle de son adversaire. Cette base doit être défendue. Ils possèdent aussi une zone de préparation individuelle qui part de leur base et fait <strong>16u</strong> de large.</p><h2 id="ce337f8d-4011-4ef1-9d55-57070f3e59b2" class="">Objectif</h2><p id="9425ec37-783c-4f5a-8777-94dcc512d62b" class="">L’objectif de chaque joueur est que sont adversaire n’ai plus de <em>point d’unité</em> disponible ou que la base adverse n’ai plus de vie.</p><hr id="e5178074-3ca6-482e-a119-a03c74bcb931"/><h1 id="66f4d418-989f-45e1-9759-1cb289fc6425" class="">Générations</h1><p id="47fa8203-dd52-486a-abcf-992970ce0e2d" class="">Tout comme le jeu de la vie, une cellule vide nait si elle est entourée de 3 cellules, une celllule vivante survie si elle est entourée de 2 ou 3 cellules, et meurt si elle est entourée de 1 ou &gt;3 cellules.</p><p id="0135d4d1-4dd2-4ab3-a86a-0bd2a2ba97b4" class="">La particularité étant la présence de 2 types de cellules : celles du <mark class="highlight-red"><strong>joueur A</strong></mark> et du <mark class="highlight-blue"><strong>joueur B</strong></mark></p><h3 id="c481a693-11ac-49e8-aed2-4ff38a1cb80d" class="">Naissance d’une cellule</h3><p id="31f4d1ed-fd25-4921-ad82-ba8ee62b6786" class="">La couleur de la cellule qui nait correspond à la couleur dominante des cellules autour d’elle. </p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="39c189ff-dc48-4541-a5aa-002de0d3d25f"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">Etant donné que 3 est impair il n’y a pas de soucis d’égalité.</div></figure><div id="1ff114b6-1db7-4464-9a1d-3f9a664a12c9" class="column-list"><div id="85639b82-fb31-45b7-bba5-cbc8de0084fe" style="width:18.75%" class="column"><table id="4052c670-4833-4cc5-ba48-bf2224b1c3f3" class="simple-table"><tbody><tr id="f6c02efa-148c-47ad-a857-7edfa81b7f12"><td id="QrRe" class="" style="width:35px"><mark class="highlight-red"><strong>A</strong></mark></td><td id="[nF^" class="block-color-default" style="width:35px"><mark class="highlight-red"><strong>A</strong></mark></td><td id="~lDd" class="block-color-default" style="width:35px"></td></tr><tr id="939c98e4-e63a-4105-a16f-6d3c25629e69"><td id="QrRe" class="" style="width:35px"></td><td id="[nF^" class="block-color-default" style="width:35px"><strong>?</strong></td><td id="~lDd" class="block-color-default" style="width:35px"></td></tr><tr id="d0aa2c28-f574-4fc0-b0f1-a5a315e87c79"><td id="QrRe" class="" style="width:35px"></td><td id="[nF^" class="block-color-default" style="width:35px"></td><td id="~lDd" class="block-color-default" style="width:35px"><mark class="highlight-blue"><strong>B</strong></mark></td></tr></tbody></table></div><div id="6cc2bbc5-242c-4082-b47f-b0941d52912f" style="width:81.25%" class="column"><p id="239b156f-b2c1-4eb2-a323-c50567d5618e" class=""><em>exemple : si une cellule est entourée de </em><mark class="highlight-red"><strong><em>A A</em></strong></mark><strong><em> </em></strong><mark class="highlight-blue"><strong><em>B</em></strong></mark><strong><em> </em></strong><em>alors elle nait en appartenant au</em><strong><em> </em></strong><mark class="highlight-red"><strong><em>joueur A </em></strong></mark><em>(comme ci-contre)</em></p></div></div><h3 id="f8123145-11df-4437-8115-b8eb19e27ec0" class="">Mort d’une cellule - gain de points d’unité</h3><p id="36214b35-4255-4d8b-883e-52633478c0bd" class="">La mort d’une cellule adverse est le seul moyen pour un joueur de gagner des <em>points d’unité</em>.<em> </em></p><p id="69884cfa-c2ac-47ea-b531-822ac33a560f" class="">Pour gagner un point d’unité il faut que la cellule adverse meurt en respectant 2 condtitions :</p><ul id="7bde421a-33ec-465f-a0e9-cedcafd45128" class="bulleted-list"><li style="list-style-type:disc">il faut que la cellule adverse soit morte de surpopulation.</li></ul><ul id="e45cb6f6-5ad9-4bc9-838b-18deb0851405" class="bulleted-list"><li style="list-style-type:disc">il faut que parmis les cellules qui ont causé la mort de la cellule adverse, au moins la moitié - incluse - appartiennent au joueur.</li></ul><div id="530fb1a1-ad13-43f0-881b-144b885da210" class="column-list"><div id="0d6e2d79-1c4d-4a4e-80a4-6007d0f921a7" style="width:18.75%" class="column"><table id="d4a31460-3bd0-4c2f-aab2-2349c0d871e5" class="simple-table"><tbody><tr id="e46c6689-8188-41ef-a307-32b5f60c8af5"><td id="QrRe" class="" style="width:35px"><mark class="highlight-red"><strong>A</strong></mark></td><td id="[nF^" class="block-color-default" style="width:35px"><mark class="highlight-red"><strong>A</strong></mark></td><td id="~lDd" class="block-color-default" style="width:35px"></td></tr><tr id="1d4d5666-4f4c-447a-86e6-da25603bebfd"><td id="QrRe" class="" style="width:35px"></td><td id="[nF^" class="block-color-default" style="width:35px"><mark class="highlight-red"><strong>A</strong></mark></td><td id="~lDd" class="block-color-default" style="width:35px"></td></tr><tr id="b34b98d5-e16f-41bf-9347-11423c88ab86"><td id="QrRe" class="" style="width:35px"><mark class="highlight-blue"><strong>B</strong></mark></td><td id="[nF^" class="block-color-default" style="width:35px"></td><td id="~lDd" class="block-color-default" style="width:35px"><mark class="highlight-blue"><strong>B</strong></mark></td></tr></tbody></table></div><div id="7c047b55-2f5a-4240-845e-c22848094acd" style="width:81.25%" class="column"><p id="1f29deb4-839e-4f22-9186-a888c07ca392" class=""><em>exemple 1 : en regardant ci-contre on remarque que la cellule du centre va mourir de surpopulation. Il s’agit d’une cellule du </em><mark class="highlight-red"><strong><em>joueur A.</em></strong></mark><em> Etant donné qu’elle est entourée de 4 cellules et que 2 (c.à.d. au moins la moitié) appartiennent au </em><mark class="highlight-blue"><strong><em>joueur B</em></strong></mark><em>, le </em><mark class="highlight-blue"><strong><em>joueur B</em></strong></mark><em> va gagner 1 point d’unité.</em></p></div></div><div id="5def0487-ed72-41ac-a4d1-daced787d064" class="column-list"><div id="8ecae51d-031d-491b-a5c4-fbbc94de1877" style="width:18.75%" class="column"><table id="b835d84c-a647-4609-b39c-d5b45592e2ad" class="simple-table"><tbody><tr id="d46ed3c4-171b-4e0b-80c7-625a77177cf3"><td id="QrRe" class="" style="width:35px"><mark class="highlight-red"><strong>A</strong></mark></td><td id="[nF^" class="block-color-default" style="width:35px"><mark class="highlight-red"><strong>A</strong></mark></td><td id="~lDd" class="block-color-default" style="width:35px"></td></tr><tr id="32ddcc67-42c3-42fe-b9a0-9023cdfab85c"><td id="QrRe" class="" style="width:35px"></td><td id="[nF^" class="block-color-default" style="width:35px"><mark class="highlight-blue"><strong>B</strong></mark></td><td id="~lDd" class="block-color-default" style="width:35px"><mark class="highlight-blue"><strong>B</strong></mark></td></tr><tr id="05d2c8c2-5820-4875-baeb-bba4d1e427c5"><td id="QrRe" class="" style="width:35px"><mark class="highlight-blue"><strong>B</strong></mark></td><td id="[nF^" class="block-color-default" style="width:35px"><mark class="highlight-blue"><strong>B</strong></mark></td><td id="~lDd" class="block-color-default" style="width:35px"><mark class="highlight-blue"><strong>B</strong></mark></td></tr></tbody></table></div><div id="d67eb0d8-d060-4590-843c-a35f3290464b" style="width:81.25%" class="column"><p id="87c92f43-bd5f-4d65-b2fb-b6c2d46e8871" class=""><em>exemple 2 : en regardant ci-contre on remarque que la cellule du centre va mourir de surpopulation. Il s’agit d’une cellule du </em><mark class="highlight-blue"><strong><em>joueur B.</em></strong></mark><em> Etant donné qu’elle est entourée de 6 cellules mais que seulement 2 appartiennent au  </em><mark class="highlight-red"><strong><em>joueur A</em></strong></mark><em>, le  </em><mark class="highlight-red"><strong><em>joueur A</em></strong></mark><em> </em><strong><em>ne va pas</em></strong><em> gagner de point d’unité. De plus, bien que la cellule mourante soit entourée d’une majorité de cellule du </em><mark class="highlight-blue"><strong><em>joueur B</em></strong></mark><em>, ce dernier </em><strong><em>ne va pas</em></strong><em> gagner de point d’unité vu que c’est </em><strong><em>sa propre cellule</em></strong><em> qui meurt.</em></p></div></div><hr id="2363e28d-7337-4123-87de-829e156dac57"/><h1 id="3e0d741d-2792-489e-8652-bddf9c512470" class="">Système de points</h1><h2 id="daa01d26-67e2-4b07-8507-e6aacc8e4a93" class="">Points d’unité</h2><h3 id="473cb144-9bfb-448e-8692-2d6c88703a3f" class="">Utilité</h3><p id="5b0e0c84-e5cc-48dc-bb04-815eb1cb507f" class="">Les points d’unité ne sont utiliable que pendant la phase de préparation. Ils servent à créer des cellules. 1 point d’unité vaut 1 cellule. Si on ajoute une cellule puit qu’on la supprime on récupère le point d’unité utilisé.</p><h3 id="a66cfc84-3f40-48f5-bf1c-d82e28269148" class="">Gain</h3><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="26a9a735-5eef-4b86-aff7-f8461599803e"><div style="font-size:1.5em"><span class="icon">📢</span></div><div style="width:100%"><em>voir le paragraphe : Generation ⇒ </em>Mort d’une cellule - gain de points d’unité</div></figure><h2 id="d72c540a-fbf0-428d-af1d-093b51016411" class="">Points de vie</h2><h3 id="99b5f314-b18b-4afe-8f48-a984a0ea7faf" class="">Utilité</h3><p id="a0d1b686-8808-4aa7-9b58-8c4c4d179d2e" class="">Vos points de vies correspondent aux pv de votre base. Dès que votre base n’en a plus vous perdez la partie.</p><h3 id="85d16ae9-f5ed-4488-9fca-fb860f242456" class="">Gain - Destruction</h3><p id="5bc22ca1-23e0-4376-bf55-0f3caceb57bb" class="">Vous ne pouvez pas récuperer de points de vie. Par contre, votre objectif est de réduires ceux de votre adversaire. Pour cela il suffit qu’une de vos cellules ateigne la base adverse. dès qu’une cellule se génère ou survie dans la base ennemie, elle inflige 1 point de dégat.</p><hr id="972b1755-e2f7-455a-a865-47178ec75ae8"/><h1 id="7267154a-642f-4bc8-ba7f-599c1f75720f" class="">Déroulement d’une partie</h1><h2 id="9867a7cd-b201-4a7e-9d99-223598277d03" class="">Début</h2><p id="f23e221b-86e6-4c98-a7de-df46a59c0789" class="">La partie commence en phase de préparation. Chaque joueur commence avec 512ptc.</p><h2 id="45a6591c-f1e8-42ae-b310-dd84542d6766" class="">Phase de préparation</h2><p id="4d3f3447-69fb-4133-bff5-b9df732f493d" class="">Chaque joueur a 64 secondes (ou jusqu’a ce que les deux joueurs soient prêts) pour placer toutes (ou une partie) de ses cellules dans son camp.</p><p id="21d1f9fc-82d8-416c-af1f-27b796a8470e" class="">Chaque joueur ne peut pas voir comment sont réparties les cellules son adversaire tant qu’ils sont en phase de préparation.</p><h2 id="7b7e31ff-4e4f-4da0-a82c-e959fa2a107b" class="">Phase de round - Le Chaos</h2><p id="7a0a04c2-2290-468c-9f91-2f43f473445e" class="">Une fois la phase de préparation terminée, la phase de round - ou “Le Chaos” - commence, c.à.d. que la simulation est lancée pendant 1024 cycles. Durant cette période les joueurs ne peuvent pas ajouter ou supprimer de cellule.</p><p id="dc319cbf-e85e-4f66-85a2-793d0fc436c0" class="">Une fois les 1024 cycles terminés, si personne n’a gagné, on reprend la phase de préparation en laissant les ‘cadavres’ de cellules sur le champ de bataille. Les ‘cadavres’ présents dans chaque camp sont supprimés.</p><h2 id="113ec7b5-c99f-4957-aa2d-44adbb09bb2b" class="">Victoire</h2><p id="c0b01925-9905-48a2-8ce6-f753647aaee8" class="">Un joueur gagne quand son adversaire n’a plus de point cellulaire. <span style="border-bottom:0.05em solid">Une victoire n’est annoncée qu’a la fin d’un round</span> c.à.d. que si pendant un round le joueur A supprime tous les points d’unité du joueur B mais que plus tard pendant le même round le joueur B tue la base du joueur A, il y a alors égalité.</p></div></article></body></html>
