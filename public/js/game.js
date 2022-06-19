@@ -1,8 +1,8 @@
 var canvas = document.getElementById('game-canvas');
 var ctx = canvas.getContext('2d');
 
-const cote = 64;
-const ANTI_ALIASING = 1
+var cote = 64;
+var ANTI_ALIASING = 1
 var padding = 0;
 
 canvas.width = canvas.clientWidth
