@@ -2,7 +2,8 @@ var canvas = document.getElementById('game-canvas');
 var ctx = canvas.getContext('2d');
 
 const cote = 64;
-var padding = .12;
+const ANTI_ALIASING = 1
+var padding = 0;
 
 canvas.width = canvas.clientWidth
 canvas.height = canvas.clientHeight
@@ -42,9 +43,9 @@ function randomize(){
 
                 for (let j = 1; j <= cote; j++) {
 
-                    switch(Math.floor(Math.random()*3)){
+                    switch(Math.floor(Math.random()*5)){
                         case 2:
-                            dict[i].push(true);
+                            i>cote/2? dict[i].push(true):dict[i].push(false)
                         // case 4:;
                         //     dict[i].push(false);
                         default:
@@ -69,6 +70,7 @@ function randomize(){
 function calculateGenerationStep(){
     var nxtDict = {};
     var p =0;
+    var pi = 0
 
     //first colonne ;
     // i = 0;
@@ -85,19 +87,21 @@ function calculateGenerationStep(){
 
             for (let j = 1; j <= cote; j++) {
                 //calcul population
-                p = 0
+                p = []
+                pi=0
                 for (let ik = i-1; ik <= i+1; ik++) {
                     for (let jk = j-1; jk <= j+1; jk++) {                        
                         if(dict[ik][jk] !== undefined){
                             p++
+                            dict[ik][jk]? pi++ : undefined
                         }
                     }
                 }
-                if(p===3){
-                    nxtDict[i].push(true)
-                } else if (dict[i][j] !== undefined && p === 4){
-                    nxtDict[i].push(true)
-                } else {
+                if(dict[i][j] === undefined && p === 3){//cas naissance de la cellule
+                    pi>1? nxtDict[i].push(true) : nxtDict[i].push(false)
+                } else if (p === 4 || p === 3){// cas survie de la cellule
+                    nxtDict[i].push(dict[i][j])
+                } else {//cas mort de la cellule
                     nxtDict[i].push(undefined)
                 }
             }
@@ -164,7 +168,7 @@ function renderFrame(){
                     ctx.fillStyle = '#181818';//white
                 }
             } else if(dict[i][j] === false){
-                ctx.fillStyle = 'red';
+                ctx.fillStyle = '#a97efa';
             }else {
                 ctx.fillStyle = '#DF5050';
             }
@@ -184,27 +188,11 @@ let mouseX, mouseY
 
 function getMousePosition(canvas, event) {
     let rect = canvas.getBoundingClientRect();
-    mouseX = Math.ceil((event.clientX - rect.left)/cellSize);
-    mouseY = Math.ceil((event.clientY - rect.top)/cellSize);
+    mouseX = Math.ceil((event.clientX - rect.left)*ANTI_ALIASING/cellSize);
+    mouseY = Math.ceil((event.clientY - rect.top)*ANTI_ALIASING/cellSize);
 }
 
-  
-canvas.addEventListener("mousedown", function(e)
-{
-    getMousePosition(canvas, e)
 
-    if(dict[mouseX][mouseY]==undefined){
-        dict[mouseX][mouseY] = true;
-        var audio = new Audio('/audio/add.mp3');
-        audio.volume = 0.2
-    } else {
-        dict[mouseX][mouseY] = undefined
-        var audio = new Audio('/audio/remove.mp3');
-    } 
-    audio.play(); 
-    renderFrame()
-    
-});
 
 window.addEventListener('keydown', function(e) {
     if(e.key == ' ' && e.target == document.body) {
@@ -213,6 +201,7 @@ window.addEventListener('keydown', function(e) {
 });
 
 document.addEventListener('keydown', function(event) {
+    console.log(event.key)
     if(event.key == ' ') {
         flag = !flag
         flag? runGame() : undefined
@@ -246,25 +235,60 @@ document.addEventListener('keydown', function(event) {
         padding = Math.max(0, padding-0.02)
         renderFrame()
     }
+    if(event.key == 'ArrowRight'){
+        calculateGenerationStep()
+        renderFrame()
+    }
+
 });
+
+window.oncontextmenu = function ()
+{
+    return false;     // cancel default menu
+}
+
+canvas.addEventListener('mousedown', function (e) {
+    console.log('cc')
+    var isRightMB;
+    e = e || window.event;
+
+    if ("which" in e){  // Gecko (Firefox), WebKit (Safari/Chrome) & Opera
+        isRightMB = e.which == 3; 
+    } else if ("button" in e){  // IE, Opera 
+        isRightMB = e.button == 2; 
+    }
+
+    getMousePosition(canvas, e)
+
+    if(dict[mouseX][mouseY]!==undefined){
+        dict[mouseX][mouseY] = undefined;
+        var audio = new Audio('/audio/add.mp3');
+        audio.volume = 0.2
+    } else {
+        isRightMB? dict[mouseX][mouseY] = false : dict[mouseX][mouseY] = true
+        var audio = new Audio('/audio/remove.mp3');
+    } 
+    audio.play(); 
+    renderFrame()    
+})
 
 window.addEventListener('resize', async function(e) {
 
-    canvas.width = canvas.clientWidth
-    canvas.height = canvas.clientHeight
+    canvas.width = canvas.clientWidth * ANTI_ALIASING
+    canvas.height = canvas.clientHeight * ANTI_ALIASING
 
-    ctx.width = canvas.clientWidth
-    ctx.height = canvas.clientHeight
+    ctx.width = canvas.clientWidth * ANTI_ALIASING
+    ctx.height = canvas.clientHeight * ANTI_ALIASING
 
-    cellSize = canvas.clientWidth/cote
+    cellSize = canvas.clientWidth/cote * ANTI_ALIASING
     renderFrame()
 });
 
-canvas.width = canvas.clientWidth
-canvas.height = canvas.clientHeight
+canvas.width = canvas.clientWidth * ANTI_ALIASING
+canvas.height = canvas.clientHeight * ANTI_ALIASING
 
-ctx.width = canvas.clientWidth
-ctx.height = canvas.clientHeight
+ctx.width = canvas.width
+ctx.height = canvas.height
 
-cellSize = canvas.clientWidth/cote
+cellSize = canvas.width/cote
 renderFrame()
