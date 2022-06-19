@@ -3,10 +3,12 @@
     /* webkit printing magic: print all background colors */
     html {
         -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
     }
     * {
         box-sizing: border-box;
         -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
     }
     
     html,
@@ -290,7 +292,6 @@
     }
     .simple-table td {
         height: 29px;
-        min-width: 120px;
     }
     
     .simple-table th {
@@ -412,7 +413,6 @@
     .code {
         padding: 1.5em 1em;
     }
-    
     .code-wrap {
         white-space: pre-wrap;
         word-break: break-all;
