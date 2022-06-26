@@ -8,6 +8,28 @@
 </head>
 <body>
     <h1>Welcome in room <%= id %></h1>
+    <p id="p">Starting script...</p>
     <button onclick="window.location.href = '/game/wow-nic'">Launch match</button>    
+    <button onclick="window.location.href = '/lobby'">Leave</button>
+
+    
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> 
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+        // const io = require("socket.io-client");
+        const roomToken = window.location.href.split('/')[window.location.href.split('/').length - 1]
+
+        const socket = io('/rooms');
+        document.getElementById('p').innerHTML = "connecting..."
+
+        socket.on('init-res:user-connection', (err)=> {
+            if (err){
+                document.getElementById('p').innerHTML = err.message; 
+                return false
+            }
+            document.getElementById('p').innerHTML = "Connected"  
+        })
+    </script>
 </body>
 </html>
