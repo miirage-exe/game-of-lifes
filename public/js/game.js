@@ -2,7 +2,7 @@ var canvas = document.getElementById('game-canvas');
 var ctx = canvas.getContext('2d');
 
 var cote = 64;
-var ANTI_ALIASING = 1
+var ANTI_ALIASING = 3
 var padding = 0;
 
 canvas.width = canvas.clientWidth
@@ -159,6 +159,8 @@ function runGame(){
 }
 
 function renderFrame(){
+    
+    cellSize = canvas.clientWidth/cote * ANTI_ALIASING
     for (let i = 1; i <= cote; i++) {
         for (let j = 1; j <= cote; j++) {
             if(!dict[i] || dict[i][j] === undefined){
@@ -168,9 +170,9 @@ function renderFrame(){
                     ctx.fillStyle = '#181818';//white
                 }
             } else if(dict[i][j] === false){
-                ctx.fillStyle = '#a97efa';
+                ctx.fillStyle = 'white';//#a97efa
             }else {
-                ctx.fillStyle = '#DF5050';
+                ctx.fillStyle = 'white';//#DF5050
             }
             ctx.clearRect((i-1)*cellSize, (j-1)*cellSize,cellSize, cellSize)
             for (let f = 0; f < 5; f++) {
@@ -287,8 +289,8 @@ window.addEventListener('resize', async function(e) {
 canvas.width = canvas.clientWidth * ANTI_ALIASING
 canvas.height = canvas.clientHeight * ANTI_ALIASING
 
-ctx.width = canvas.width
-ctx.height = canvas.height
+ctx.width = canvas.clientWidth * ANTI_ALIASING
+ctx.height = canvas.clientHeight * ANTI_ALIASING
 
-cellSize = canvas.width/cote
+cellSize = canvas.clientWidth/cote * ANTI_ALIASING
 renderFrame()
