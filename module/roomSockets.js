@@ -1,17 +1,12 @@
-const Namespace = require('./namespace.js')
-const socketio = require("socket.io")
+const webSocket = require('../middlewares/webSocket.js')
 const EventEmitter = require('events');
-const { stringify } = require('querystring');
-const Error = require('./error.js')
-
-const serverSockets = new EventEmitter();
-
-
+const Error = require('../presets/WSerror.js')
+const GameMaster =require('./gameMaster.js');
+const { randomUUID } = require('crypto');
 
 module.exports = (server, session) => {
 
-    const io = socketio(server)
-    const ioRooms = new Namespace(io, "/rooms", session)
+    const ioRooms = new webSocket.Namespace("/rooms")
 
     function firstConnect(roomToken=String, socketId=String){
         if(ioRooms.adapter.rooms.get(roomToken)){
@@ -34,10 +29,6 @@ module.exports = (server, session) => {
             socket.disconnect()
             return false
         }
-        console.log('socketId : '+ socket.id)
-        console.log('userId : '+ socket.request.session._user._id)
-
-        var cll = ioRooms.adapter.rooms.get(roomToken)
 
         if(!firstConnect(roomToken, socket.request.session._user._id)){
             socket.emit('init-res:user-connection', new Error("already connected in another tab"))
@@ -46,7 +37,31 @@ module.exports = (server, session) => {
         }
 
         socket._user = socket.request.session._user
+        socket.team = Math.round(Math.random())==1
         socket.join(roomToken)
-        socket.emit('init-res:user-connection', false)
+        socket.emit('init-res:user-connection', false, socket.team)
+
+        socket.on('usr-req:switch-team', (next)=>{
+            socket.team = !socket.team
+            next(socket.team);
+        })
+
+        socket.on('usr-req:launch-game', ()=>{
+            const gameToken = randomUUID()
+
+            let userTable = {}
+            //setup users data
+            for (const clientId of ioRooms.adapter.rooms.get(roomToken)) {
+                userTable[ioRooms.sockets.get(clientId)._user._id] = {
+                    username: ioRooms.sockets.get(clientId)._user._id,
+                    team: ioRooms.sockets.get(clientId).team
+                }
+            }
+
+            ioRooms.to(roomToken).emit('evnt-res:launch-game', false, gameToken);
+            GameMaster.emit('build-game', gameToken, userTable)
+
+            console.log('salutmonpote')
+        })
     })
 }
