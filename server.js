@@ -4,10 +4,10 @@ const express = require('express')
 const http = require('http')
 const port = process.env.PORT
 const session = require('express-session')
-const webSocket = require('./webSocket/index.js')
+const webSocket = require('./middlewares/webSocket.js')
 const { randomUUID } = require('crypto');
+
 const userSession = require('./presets/userSession.js');
-const { equal } = require('assert');
 
 const app = express()
 const server = http.createServer(app)
@@ -34,7 +34,9 @@ const sessionMiddleware = session({
 app.use(sessionMiddleware)
 
 // connect middleware to a Socket.IO middleware
-webSocket(server, sessionMiddleware)
+webSocket.use({'server': server, 'session': sessionMiddleware})
+
+require('./module/roomSockets.js')()
 
 
 
