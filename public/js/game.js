@@ -1,3 +1,4 @@
+
 var canvas = document.getElementById('game-canvas');
 var ctx = canvas.getContext('2d');
 
@@ -20,8 +21,8 @@ var recursive = 0
 function generate(){
     for (let i = 0; i <= cote+1; i++) {
         dict[i]=[]
-        for (let j = 1; j <= cote; j++) {
-            dict[i].push(undefined)
+        for (let j = 0; j <= cote+1; j++) {
+            dict[i].push(null)
         }
     }
 }
@@ -32,14 +33,14 @@ function randomize(){
         // i = 0
         dict[0] = [];
         for (let j = 0; j <= cote+1; j++) {
-            dict[0].push(undefined);
+            dict[0].push(null);
         }
 
 
         for (let i = 1; i <= cote; i++) {
 
             dict[i] = [];
-            dict[i].push(undefined);
+            dict[i].push(null);
 
                 for (let j = 1; j <= cote; j++) {
 
@@ -49,18 +50,18 @@ function randomize(){
                         // case 4:;
                         //     dict[i].push(false);
                         default:
-                            dict[i].push(undefined);
+                            dict[i].push(null);
                     }
                 }
 
-            dict[i].push(undefined);
+            dict[i].push(null);
         }
 
         //last colonne;
         // i = cote+1;
         dict[cote+1] = [];
         for (let j = 0; j <= cote+1; j++) {
-            dict[cote+1].push(undefined);
+            dict[cote+1].push(null);
         }
 }
 
@@ -76,14 +77,14 @@ function calculateGenerationStep(){
     // i = 0;
     nxtDict[0] = [];
         for (let j = 0; j <= cote+1; j++) {
-            nxtDict[0].push(undefined)
+            nxtDict[0].push(null)
         }
 
 
     for (let i = 1; i <= cote; i++) {
 
         nxtDict[i] = []
-        nxtDict[i].push(undefined)
+        nxtDict[i].push(null)
 
             for (let j = 1; j <= cote; j++) {
                 //calcul population
@@ -91,29 +92,29 @@ function calculateGenerationStep(){
                 pi=0
                 for (let ik = i-1; ik <= i+1; ik++) {
                     for (let jk = j-1; jk <= j+1; jk++) {                        
-                        if(dict[ik][jk] !== undefined){
+                        if(dict[ik][jk] !== null){
                             p++
-                            dict[ik][jk]? pi++ : undefined
+                            dict[ik][jk]? pi++ : null
                         }
                     }
                 }
-                if(dict[i][j] === undefined && p === 3){//cas naissance de la cellule
+                if(dict[i][j] === null && p === 3){//cas naissance de la cellule
                     pi>1? nxtDict[i].push(true) : nxtDict[i].push(false)
                 } else if (p === 4 || p === 3){// cas survie de la cellule
                     nxtDict[i].push(dict[i][j])
                 } else {//cas mort de la cellule
-                    nxtDict[i].push(undefined)
+                    nxtDict[i].push(null)
                 }
             }
 
-        nxtDict[i].push(undefined)
+        nxtDict[i].push(null)
     }
 
     //last colonne
     // i = cote+1
     nxtDict[cote+1] = []
         for (let j = 0; j <= cote+1; j++) {
-            nxtDict[cote+1].push(undefined)
+            nxtDict[cote+1].push(null)
         }
 
 
@@ -163,7 +164,7 @@ function renderFrame(){
     cellSize = canvas.clientWidth/cote * ANTI_ALIASING
     for (let i = 1; i <= cote; i++) {
         for (let j = 1; j <= cote; j++) {
-            if(!dict[i] || dict[i][j] === undefined){
+            if(!dict[i] || dict[i][j] === null){
                 if((i+j)%2){
                     ctx.fillStyle = '#242424';//EDEDED
                 } else {
@@ -172,7 +173,7 @@ function renderFrame(){
             } else if(dict[i][j] === false){
                 ctx.fillStyle = 'white';//#a97efa
             }else {
-                ctx.fillStyle = 'white';//#DF5050
+                ctx.fillStyle = '#DF5050';//#DF5050
             }
             ctx.clearRect((i-1)*cellSize, (j-1)*cellSize,cellSize, cellSize)
             for (let f = 0; f < 5; f++) {
@@ -184,7 +185,6 @@ function renderFrame(){
 
 generate()
 renderFrame()
-console.log(dict)
 
 let mouseX, mouseY
 
@@ -249,27 +249,24 @@ window.oncontextmenu = function ()
     return false;     // cancel default menu
 }
 
-canvas.addEventListener('mousedown', function (e) {
-    console.log('cc')
-    var isRightMB;
-    e = e || window.event;
+function addTile(x=Number, y=Number, stage=undefined){
+    dict[x][y] = stage;
+    //var audio = new Audio('/audio/remove.mp3');
+    renderFrame()
+}
 
-    if ("which" in e){  // Gecko (Firefox), WebKit (Safari/Chrome) & Opera
-        isRightMB = e.which == 3; 
-    } else if ("button" in e){  // IE, Opera 
-        isRightMB = e.button == 2; 
-    }
+canvas.addEventListener('mousedown', function (e) {
 
     getMousePosition(canvas, e)
 
-    if(dict[mouseX][mouseY]!==undefined){
-        dict[mouseX][mouseY] = undefined;
+    if(dict[mouseX][mouseY]!==null){
+        socket.emit('user:set-tile', mouseX, mouseY, null)
         var audio = new Audio('/audio/add.mp3');
         audio.volume = 0.2
     } else {
-        isRightMB? dict[mouseX][mouseY] = false : dict[mouseX][mouseY] = true
+        socket.emit('user:set-tile', mouseX, mouseY, true)
         var audio = new Audio('/audio/remove.mp3');
-    } 
+    }
     audio.play(); 
     renderFrame()    
 })
