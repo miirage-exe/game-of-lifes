@@ -8,8 +8,9 @@
 </head>
 <body>
     <h1>Welcome in room <%= id %></h1>
-    <p id="p">Starting script...</p>
-    <button onclick="window.location.href = '/game/wow-nic'">Launch match</button>    
+    <p id="text">Starting script...</p>
+    <button onclick="socket.emit('usr-req:launch-game')">Launch match</button>    
+    <button onclick="socket.emit('usr-req:switch-team',(team)=>{document.getElementById('text').innerHTML = `current team : <b>${team}</b>`; })">Switch team</button>
     <button onclick="window.location.href = '/lobby'">Leave</button>
 
     
@@ -17,18 +18,24 @@
     <script src="/socket.io/socket.io.js"></script>
 
     <script>
-        // const io = require("socket.io-client");
         const roomToken = window.location.href.split('/')[window.location.href.split('/').length - 1]
 
         const socket = io('/rooms');
-        document.getElementById('p').innerHTML = "connecting..."
 
-        socket.on('init-res:user-connection', (err)=> {
+        socket.on('init-res:user-connection', (err, team)=> {
             if (err){
-                document.getElementById('p').innerHTML = err.message; 
+                document.getElementById('text').innerHTML = err.message; 
                 return false
             }
-            document.getElementById('p').innerHTML = "Getting room data..."  
+            document.getElementById('text').innerHTML = `current team : <b>${team}</b>`;
+        })
+
+        socket.on('evnt-res:launch-game', (err, gameToken)=> {
+            if (err){
+                document.getElementById('text').innerHTML = err.message; 
+                return false
+            }
+            window.location.href = `/game/${gameToken}`;
         })
     </script>
 </body>
