@@ -43,10 +43,9 @@ function renderBoardSet(){
 function renderLocalTileSet(){
     for (const [key, value] of Object.entries(localBoard)) {
         const coord = key.split(" ")
-        console.log("value : ", value)
         if (value !== undefined){
             ctx.fillStyle = 'green';//#a97efa
-            ctx.fillRect(((coord[0]-1)*cellSize) + cellSize*padding, ((coord[1]-1)*cellSize) + cellSize*padding, cellSize - (cellSize*padding*2), cellSize - (cellSize*padding*2));
+            fillTile(coord[0]-1,coord[1]-1)
         }
     }
 }

@@ -30,6 +30,8 @@ function getMousePosition(canvas, event) {
 
 canvas.addEventListener('mousedown', function (e) {
 
+    if(!canEdit) return false;
+
     getMousePosition(canvas, e)
 
     if(dict[mouseX][mouseY]!==null){

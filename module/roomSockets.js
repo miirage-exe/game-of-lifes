@@ -4,7 +4,7 @@ const Error = require('../presets/WSerror.js')
 const GameMaster =require('./gameMaster.js');
 const { randomUUID } = require('crypto');
 
-module.exports = (server, session) => {
+module.exports = () => {
 
     const ioRooms = new webSocket.Namespace("/rooms")
 
@@ -60,8 +60,6 @@ module.exports = (server, session) => {
 
             ioRooms.to(roomToken).emit('evnt-res:launch-game', false, gameToken);
             GameMaster.emit('build-game', gameToken, userTable)
-
-            console.log('salutmonpote')
         })
     })
 }
