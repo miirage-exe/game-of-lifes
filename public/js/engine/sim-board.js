@@ -6,16 +6,13 @@ function calculateGenerationStep(){
     //first colonne ;
     // i = 0;
     nxtDict[0] = [];
-        for (let j = 0; j <= cote+1; j++) {
-            nxtDict[0].push(null)
-        }
-
+    for (let j = 0; j <= cote+1; j++) {
+        nxtDict[0].push(null)
+    }
 
     for (let i = 1; i <= cote; i++) {
-
         nxtDict[i] = []
         nxtDict[i].push(null)
-
             for (let j = 1; j <= cote; j++) {
                 //calcul population
                 p = []
@@ -36,18 +33,15 @@ function calculateGenerationStep(){
                     nxtDict[i].push(null)
                 }
             }
-
         nxtDict[i].push(null)
     }
 
     //last colonne
     // i = cote+1
     nxtDict[cote+1] = []
-        for (let j = 0; j <= cote+1; j++) {
-            nxtDict[cote+1].push(null)
-        }
-
-
+    for (let j = 0; j <= cote+1; j++) {
+        nxtDict[cote+1].push(null)
+    }
 
     var diff = false;
     for(let i = 1; i <=cote; i++){
@@ -58,7 +52,6 @@ function calculateGenerationStep(){
             }
         }
     }
-
 
     var audio;
     diff? audio = new Audio('/audio/remove.mp3') : audio = new Audio('/audio/norun.mp3')  
@@ -76,7 +69,7 @@ function generateEmpty(){
             dict[i].push(null)
         }
     }
-    renderFrame()
+    renderNormalFrame()
 }
 
 
@@ -98,19 +91,12 @@ function loop(i, duration){
         setTimeout(()=>{loop(i, duration)}, simSpeed)
     }
     calculateGenerationStep()
-    renderFrame(dict)
+    renderSimulationFrame()
 }
 
 function addTile(x=Number, y=Number, stage=null){
     dict[x][y] = stage;
     //var audio = new Audio('/audio/remove.mp3');
-    renderFrame()
+    renderNormalFrame()
 }
 
-
-let mouseX, mouseY
-function getMousePosition(canvas, event) {
-    let rect = canvas.getBoundingClientRect();
-    mouseX = Math.ceil((event.clientX - rect.left)*ANTI_ALIASING/cellSize);
-    mouseY = Math.ceil((event.clientY - rect.top)*ANTI_ALIASING/cellSize);
-}
