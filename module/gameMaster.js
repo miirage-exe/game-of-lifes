@@ -5,7 +5,7 @@ const { copyFileSync } = require('fs');
 const gameEvent = new EventEmitter()
 const durationPrepa = 10*1000
 const durationChaos = 10*1000
-const framerate = 16
+const framerate = 24
 const cote = 64
 
 
@@ -98,8 +98,8 @@ gameEvent.on("build-game", (gameToken = String , players=Object)=>{
                 socket.on('user:set-tile', (x,y,state=null)=>{
                     if (state) {
                         state=players[socket.request.session._user._id].team;
-                        Board[x][y] = state;
                     }
+                    Board[x][y] = state;
                     ioGame.to('players').emit('canvas:set-tile', x, y, state)
                 })
             }
@@ -148,14 +148,20 @@ gameEvent.on("build-game", (gameToken = String , players=Object)=>{
             progress = 'chaos'
             localGameEvent.emit('server:disable-edit')
 
-            var switchDate = Date.now()+ durationChaos
-            var lastFrame; 
             ioGame.emit('progress:chaos-phase')
-            ioGame.emit('chaos-phase:launch-simulation', durationChaos*framerate/1000, framerate, Board)
 
-            run(0, 1000)
-            
-            //setTimeout(checkWinner, switchDate - Date.now())
+            const numberOfFrames = Math.round((durationChaos/1000)*framerate);
+            const endSimulationAt = Date.now()+ durationChaos
+
+            ioGame.emit('chaos-phase:launch-simulation', numberOfFrames, endSimulationAt, Board)
+ 
+
+            for(i=0; i<numberOfFrames; i++){
+                Board = calculateGenerationStep(Board)
+                console.log('frame n°' + i)
+            }
+
+            setTimeout(checkWinner, endSimulationAt+1000 - Date.now())
         } 
 
         setupPrepa()        
