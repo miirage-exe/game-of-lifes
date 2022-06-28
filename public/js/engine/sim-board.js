@@ -77,22 +77,23 @@ function generateEmpty(){
 var simSpeed = 0
 function runGame(NumFrame, framerate){
 
-    simSpeed = 1000/framerate
+    simSpeed = framerate
 
     var audio = new Audio('/audio/start.mp3');
+    loop(0, NumFrame)
     audio.play();
 
-    loop(0, NumFrame)
 }
 
 function loop(i, NumFrame){
     if(i<NumFrame && runSim){
         i++
         setTimeout(()=>{loop(i, NumFrame)}, simSpeed)
+        calculateGenerationStep()
+        renderSimulationFrame()
+    } else {
+        console.log(`Rendered on local until frame ${i}/${NumFrame}`)
     }
-    calculateGenerationStep()
-    renderSimulationFrame()
-    console.log('rendu local')
 }
 
 function addTile(x=Number, y=Number, stage=null){
