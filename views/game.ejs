@@ -19,13 +19,21 @@
 
     <script>
         var dict = {}
+        var localBoard = {}
+
+        //HTML DOM stuff
         var canvas = document.getElementById('game-canvas');
         var ctx = canvas.getContext('2d');
+
+        // socket stuff
+        const gameToken = window.location.href.split('/')[window.location.href.split('/').length - 1]
+        const socket = io('/game/' + gameToken);
     </script>
 
-    <script src="/js/engine/renderEngine.js"></script>
-    <script src="/js/engine/simEngine.js"></script>
-    <script src="/js/engine/gameEngine.js"></script>
+    <script src="/js/engine/layout-board.js"></script>
+    <script src="/js/engine/sim-board.js"></script>
+    <script src="/js/engine/input-handler.js"></script>
+    <script src="/js/engine/global.js"></script>
 </body>
 
 <script>
