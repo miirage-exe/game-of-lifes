@@ -34,10 +34,10 @@ canvas.addEventListener('mousedown', function (e) {
 
     getMousePosition(canvas, e)
 
-    if(dict[mouseX][mouseY]!==null){
+    if(dict[mouseX][mouseY]!==null || localBoard[mouseX + ' ' + mouseY]){
 
         socket.emit('user:set-tile', mouseX, mouseY, null)
-        localBoard[mouseX + " " + mouseY] = new localTile(mouseX, mouseY, null)
+        localBoard[mouseX + " " + mouseY] = null
 
         var audio = new Audio('/audio/add.mp3');
         audio.volume = 0.2
