@@ -10,13 +10,15 @@ ctx.height = canvas.clientHeight
 
 var cellSize = Math.floor(canvas.clientWidth/cote);
 
-
+function renderModel(model=Function){
+    for (let f = 0; f < 5; f++) {
+        model()
+    }
+}
 
 function fillTile(x,y){
     ctx.clearRect((x)*cellSize, (y)*cellSize,cellSize, cellSize)
-    for (let f = 0; f < 5; f++) {
-        ctx.fillRect(((x)*cellSize) + cellSize*padding, ((y)*cellSize) + cellSize*padding, cellSize - (cellSize*padding*2), cellSize - (cellSize*padding*2));
-    }
+    renderModel(()=>{ctx.fillRect(((x)*cellSize) + cellSize*padding, ((y)*cellSize) + cellSize*padding, cellSize - (cellSize*padding*2), cellSize - (cellSize*padding*2));})
 }
 
 function renderBoardSet(){
@@ -24,13 +26,9 @@ function renderBoardSet(){
     for (let i = 1; i <= cote; i++) {
         for (let j = 1; j <= cote; j++) {
             if(!dict[i] || dict[i][j] === null){
-                if((i+j)%2){
-                    ctx.fillStyle = '#242424';//EDEDED
-                } else {
-                    ctx.fillStyle = '#181818';//white
-                }
+                ctx.fillStyle = getBackgroundTileColor(i, j)
             } else if(dict[i][j] === false){
-                ctx.fillStyle = 'white';//#a97efa
+                ctx.fillStyle = '#6AABE9';//#white
             }else {
                 ctx.fillStyle = '#DF5050';//#DF5050
             }
@@ -41,11 +39,18 @@ function renderBoardSet(){
 }
 
 function renderLocalTileSet(){
+
+    const layoutCellSize = cellSize-(2*padding*cellSize)
+    const modelSize = 0.5
+
     for (const [key, value] of Object.entries(localBoard)) {
         const coord = key.split(" ")
         if (value !== undefined){
-            ctx.fillStyle = 'green';//#a97efa
-            fillTile(coord[0]-1,coord[1]-1)
+            console.log(getBackgroundTileColor(coord[0], coord[1]))
+            value ? ctx.fillStyle = "rgba(255, 255, 255, 0.5)" : ctx.fillStyle = getBackgroundTileColor(coord[0]-1, coord[1]-1)
+            renderModel(()=>{
+                ctx.fillRect(((coord[0]-1)*cellSize) + cellSize*padding + ((1-modelSize)*layoutCellSize/2), ((coord[1]-1)*cellSize) + cellSize*padding + ((1-modelSize)*layoutCellSize/2), modelSize * layoutCellSize, modelSize * layoutCellSize);
+            })
         }
     }
 }
@@ -57,4 +62,12 @@ function renderSimulationFrame(){
 function renderNormalFrame(){
     renderBoardSet()
     renderLocalTileSet()
+}
+
+function getBackgroundTileColor(x, y){
+    if((x+y)%2){
+        return '#242424';//EDEDED
+    } else {
+        return '#181818';//white
+    }
 }
