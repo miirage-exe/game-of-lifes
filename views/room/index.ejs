@@ -8,9 +8,10 @@
 </head>
 <body>
     <h1>Welcome in room <%= id %></h1>
-    <p id="text">Starting script...</p>
+    <p id="user-info">Starting script...</p>
+    <p id="room-info">Getting room data...</p>
     <button onclick="socket.emit('usr-req:launch-game')">Launch match</button>    
-    <button onclick="socket.emit('usr-req:switch-team',(team)=>{document.getElementById('text').innerHTML = `current team : <b>${team}</b>`; })">Switch team</button>
+    <button onclick="socket.emit('usr-req:switch-team',(team)=>{document.getElementById('user-info').innerHTML = `current team : <b>${team}</b>`; })">Switch team</button>
     <button onclick="window.location.href = '/lobby'">Leave</button>
 
     
@@ -24,15 +25,15 @@
 
         socket.on('init-res:user-connection', (err, team)=> {
             if (err){
-                document.getElementById('text').innerHTML = err.message; 
+                document.getElementById('user-info').innerHTML = err.message; 
                 return false
             }
-            document.getElementById('text').innerHTML = `current team : <b>${team}</b>`;
+            document.getElementById('user-info').innerHTML = `current team : <b>${team}</b>`;
         })
 
         socket.on('evnt-res:launch-game', (err, gameToken)=> {
             if (err){
-                document.getElementById('text').innerHTML = err.message; 
+                document.getElementById('user-info').innerHTML = err.message; 
                 return false
             }
             window.location.href = `/game/${gameToken}`;
