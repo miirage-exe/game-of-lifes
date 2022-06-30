@@ -3,8 +3,8 @@ const EventEmitter = require('events');
 const { copyFileSync } = require('fs');
 
 const gameEvent = new EventEmitter()
-const durationPrepa = 10*1000
-const durationChaos = 10*1000
+const durationPrepa = 30*1000
+const durationChaos = 2*1000
 const framerate = 24
 const cote = 64
 
@@ -75,7 +75,6 @@ function calculateGenerationStep(Board){
 
 
 gameEvent.on("build-game", (gameToken = String , players=Object)=>{
-    
         
         const localGameEvent = new EventEmitter()
         var Board = generateEmpty()
@@ -95,23 +94,29 @@ gameEvent.on("build-game", (gameToken = String , players=Object)=>{
             })
             
             if(progress == 'preparation'){
-                socket.on('user:set-tile', (x,y,state=null)=>{
+                socket.on('user:set-tile', (x,y,state = null)=>{
                     if (state) {
-                        state=players[socket.request.session._user._id].team;
+                        state = players[socket.request.session._user._id].team;
                     }
-                    Board[x][y] = state;
-                    ioGame.to('players').emit('canvas:set-tile', x, y, state)
-                })
+                    Board[x][y] = state
+
+                    //setTimeout(()=>{
+                        ioGame.to('players').emit('canvas:set-tile', x, y, state)
+                        //;}, 3000)
+                    })
             }
 
             localGameEvent.on('server:enable-edit', ()=>{
-                socket.on('user:set-tile', (x,y,state=null)=>{
+                socket.on('user:set-tile', (x,y,state = null)=>{
                     if (state) {
-                        state=players[socket.request.session._user._id].team;
-                        Board[x][y] = state;
+                        state = players[socket.request.session._user._id].team;
                     }
-                    ioGame.to('players').emit('canvas:set-tile', x, y, state)
-                })
+                    Board[x][y] = state
+                    
+                   // setTimeout(()=>{
+                        ioGame.to('players').emit('canvas:set-tile', x, y, state)
+                        //;}, 3000)
+                    })
             })
 
             localGameEvent.on('server:disable-edit', ()=>{
@@ -132,7 +137,18 @@ gameEvent.on("build-game", (gameToken = String , players=Object)=>{
         }
 
         function checkWinner(){
-            setTimeout(setupPrepa, 10)
+
+            var room = ioGame.adapter.rooms.get('players');
+            
+            console.log(room.size)
+
+            if(room.size){
+                setTimeout(setupPrepa, 10)
+            } else {
+                console.log('ended game')
+            }
+
+            
         }
 
         function setupPrepa(){
@@ -164,7 +180,8 @@ gameEvent.on("build-game", (gameToken = String , players=Object)=>{
             setTimeout(checkWinner, endSimulationAt+1000 - Date.now())
         } 
 
-        setupPrepa()        
+        setupPrepa()
+        console.log('ciao')
     }
 )
 
