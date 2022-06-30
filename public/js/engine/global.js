@@ -14,6 +14,7 @@ socket.on('progress:chaos-phase', ()=> {
     canEdit = false
 })
 socket.on('progress:preparation-phase', (board)=> {
+    localBoard = {}
     dict = board;
     runSim = false
     setTimeout(()=>{
