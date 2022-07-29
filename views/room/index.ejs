@@ -31,11 +31,7 @@
             document.getElementById('user-info').innerHTML = `current team : <b>${team}</b>`;
         })
 
-        socket.on('evnt-res:launch-game', (err, gameToken)=> {
-            if (err){
-                document.getElementById('user-info').innerHTML = err.message; 
-                return false
-            }
+        socket.on('evnt-res:launch-game', ( gameToken)=> {
             window.location.href = `/game/${gameToken}`;
         })
     </script>

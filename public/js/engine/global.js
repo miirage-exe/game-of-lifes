@@ -1,14 +1,11 @@
 
 
-socket.on('canvas:set-tile', (x, y, v)=> {
+socket.on('set-tile', (x, y, v)=> {
     addTile(x,y,v)
     localBoard[x + " " + y] = undefined
     renderNormalFrame()
 })
 
-socket.emit('usr-ask:can-edit', (res)=>{
-    canEdit=res;
-})
 
 socket.on('progress:chaos-phase', ()=> {
     canEdit = false

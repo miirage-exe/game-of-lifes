@@ -30,20 +30,18 @@ function getMousePosition(canvas, event) {
 
 canvas.addEventListener('mousedown', function (e) {
 
-    if(!canEdit) return false;
-
     getMousePosition(canvas, e)
 
     if(dict[mouseX][mouseY]!==null || localBoard[mouseX + ' ' + mouseY]){
 
-        socket.emit('user:set-tile', mouseX, mouseY, null)
+        socket.emit('add-tile', mouseX, mouseY, null)
         localBoard[mouseX + " " + mouseY] = null
 
         var audio = new Audio('/audio/add.mp3');
         audio.volume = 0.2
     } else {
-
-        socket.emit('user:set-tile', mouseX, mouseY, true)
+        console.log('add tile')
+        socket.emit('add-tile', mouseX, mouseY, true)
         localBoard[mouseX + " " + mouseY] = new localTile(mouseX, mouseY, true)
 
         var audio = new Audio('/audio/remove.mp3');

@@ -7,7 +7,7 @@ const session = require('express-session')
 const webSocket = require('./middlewares/webSocket.js')
 const { randomUUID } = require('crypto');
 
-const userSession = require('./presets/userSession.js');
+const userSession = require('./instances/userSession.js');
 
 const app = express()
 const server = http.createServer(app)
@@ -22,21 +22,21 @@ app.use(express.json());
 
 // Sessions ===================
 
+// Session
+
 const sessionMiddleware = session({
-    secret: randomUUID(),  
+    secret: randomUUID(),
     saveUninitialized: true,
     resave: true,
     extended: true,
     cookie: { secure: false }
-  })
-
-// Session
+})
 app.use(sessionMiddleware)
 
 // connect middleware to a Socket.IO middleware
 webSocket.use({'server': server, 'session': sessionMiddleware})
 
-require('./module/roomSockets.js')()
+require('./components/rooms/room.launcher.js')
 
 
 
